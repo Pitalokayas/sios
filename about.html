@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang SiOSS Sleman</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"><i class="bi bi-shield-check text-warning me-2"></i>SiOSS Sleman</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" id="nav-index" href="index.html">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" id="nav-inventarisasi" href="inventarisasi.html">Data Inventarisasi</a></li>
+                <li class="nav-item"><a class="nav-link" id="nav-statistik" href="statistik.html">Statistik & Analisis</a></li>
+                <li class="nav-item"><a class="nav-link" id="nav-peta" href="peta.html">Peta Sebaran</a></li>
+                <li class="nav-item"><a class="nav-link" id="nav-tentang" href="about.html">Tentang</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-4">
+    <div class="row g-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 p-4 mb-4">
+                <h3 class="fw-bold border-bottom pb-2 text-dark"><i class="bi bi-info-circle-fill me-2 text-warning"></i>Latar Belakang Proyek Aktualisasi</h3>
+                <p>Sistem Inventarisasi Online Zona Selamat Sekolah (SiOSS) merupakan proyek inovasi digital yang dirancang untuk mengoptimalisasi manajemen database prasarana jalan, khususnya ZoSS di area Kabupaten Sleman. Proyek ini diinisiasi untuk menjawab tantangan pengelolaan data aset perlengkapan jalan yang sebelumnya masih bersifat konvensional menjadi terstruktur, transparan, dan berbasis geospasial digital.</p>
+                
+                <h5 class="fw-bold mt-3 text-secondary">Ruang Lingkup Fasilitas Keselamatan Jalan:</h5>
+                <ul>
+                    <li><strong>Zona Selamat Sekolah (ZoSS):</strong> Kombinasi marka merah karpet, rambu batas kecepatan, dan zebracross.</li>
+                    <li><strong>Convex Mirror (Cermin Tikungan):</strong> Aset berupa hibah/fasilitas pelengkap keselamatan pada persimpangan blind spot.</li>
+                    <li><strong>Guardrail & Rambu Udara:</strong> Pagar pengaman jalan dan rambu lalu lintas tipe tiang overhead/F.</li>
+                    <li><strong>Fasilitas Halte & Penyeberangan:</strong> Prasarana pendukung angkutan umum dan pejalan kaki di sekitar sekolah.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 border-top border-warning border-4 text-center p-4">
+                <h5 class="fw-bold mb-3">Unit Kerja</h5>
+                <p class="text-muted small">Seksi Prasarana dan Fasilitas Jalan<br><strong>Dinas Perhubungan Kabupaten Sleman</strong><br>D.I. Yogyakarta</p>
+                <hr>
+                <h6 class="fw-bold">Nilai Dasar ASN BerAKHLAK</h6>
+                <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
+                    <span class="badge bg-secondary">Berorientasi Pelayanan</span>
+                    <span class="badge bg-secondary">Akuntabel</span>
+                    <span class="badge bg-secondary">Kompeten</span>
+                    <span class="badge bg-secondary">Harmonis</span>
+                    <span class="badge bg-secondary">Loyal</span>
+                    <span class="badge bg-secondary">Adaptif</span>
+                    <span class="badge bg-secondary">Kolaboratif</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-dark text-white text-center py-3 mt-auto">
+    <div class="container">
+        <small>&copy; 2026 Dinas Perhubungan Kabupaten Sleman - Seksi Prasarana & Fasilitas Jalan. All Rights Reserved.</small>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('nav-tentang').classList.add('active');
+    </script>
+</body>
+</html>
