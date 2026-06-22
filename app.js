@@ -26,7 +26,7 @@ function badgeStatus(status){
 
 }
 
-function initDataTablePage(){
+function initDataTablePage(data){
 
     const data=window.globalSpreadsheetData;
 
@@ -116,7 +116,7 @@ function initDataTablePage(){
 
         responsive:true,
 
-        pageLength:10,
+        autowidth:false
 
         language:{
             url:"https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
