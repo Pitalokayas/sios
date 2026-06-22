@@ -7,6 +7,7 @@ async function fetchSpreadsheetData() {
         const response = await fetch(SPREADSHEET_CSV_URL);
         const csvText = await response.text();
         window.globalSpreadsheetData = parseCSV(csvText);
+        console.log(window.globalSpreadsheetData);
         const event = new Event('spreadsheetDataLoaded');
         window.dispatchEvent(event);
     } catch (error) {
