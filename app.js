@@ -1,56 +1,127 @@
-function initDashboard() {
-    const data = window.globalSpreadsheetData;
-    if (!data || data.length === 0) return;
-    const totalCount = data.length;
-    let layakCount = 0; let rusakCount = 0;
-    data.forEach(item => {
-        const kondisiMarka = (item['Kondisi Marka ZoSS'] || '').toLowerCase();
-        if (kondisiMarkaZoSS.includes('baik') || kondisiMarkaZoSS.includes('layak')) { layakCount++; }
-        else { rusakCount++; }
-    });
-    document.getElementById('total-zoss').innerText = totalCount;
-    document.getElementById('total-layak').innerText = layakCount;
-    document.getElementById('total-rusak').innerText = rusakCount;
-    const ctx = document.getElementById('chartRingkasan').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Layak / Baik', 'Perlu Pemeliharaan'],
-            datasets: [{ data: [layakCount, rusakCount], backgroundColor: ['#198754', '#dc3545'], borderWidth: 1 }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
+// ======================================================
+// SiOSS Inventarisasi
+// ======================================================
+
+function badgeStatus(status){
+
+    if(!status){
+        return '<span class="badge bg-secondary">-</span>';
+    }
+
+    let s=status.toLowerCase();
+
+    if(s.includes("baik")||s.includes("layak")){
+
+        return `<span class="badge bg-success">${status}</span>`;
+
+    }
+
+    if(s.includes("sedang")){
+
+        return `<span class="badge bg-warning text-dark">${status}</span>`;
+
+    }
+
+    return `<span class="badge bg-danger">${status}</span>`;
+
 }
 
-function initDataTablePage() {
-    const data = window.globalSpreadsheetData;
-    const tbody = document.getElementById('tbodyZoSS');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    data.forEach((item, index) => {
-        const tr = document.createElement('tr');
-        const markaStatus = (item['Kondisi Marka ZoSS'] || 'Baik');
-        const badgeMarka = markaStatus.toLowerCase().includes('pudar') || markaStatus.toLowerCase().includes('rusak') 
-            ? `<span class="badge badge-status-rusak">${markaStatus}</span>` : `<span class="badge badge-status-baik">${markaStatus}</span>`;
-        const rambuStatus = (item['Kondisi Rambu ZoSS'] || 'Baik');
-        const badgeRambu = rambuStatus.toLowerCase().includes('rusak') || rambuStatus.toLowerCase().includes('pudar')
-            ? `<span class="badge badge-status-rusak">${rambuStatus}</span>` : `<span class="badge badge-status-baik">${rambuStatus}</span>`;
-        tr.innerHTML = `
-            <td>${index + 1}</td>
-            <td><strong>${item['Nama Sekolah'] || item['Nama Lokasi'] || 'Fasilitas ZoSS'}</strong></td>
-            <td>${item['Kapanewon'] || item['Kecamatan'] || '-'}</td>
-            <td>${item['Kelurahan'] || item['Desa'] || '-'}</td>
-            <td>${badgeMarka}</td>
-            <td>${badgeRambu}</td>
-            <td>${item['Kondisi zebra Cross'] || '-'}</td>
-            <td>${item['Kondisi Pita Penggaduh'] || '-'}</td>
+function initDataTablePage(){
+
+    const data=window.globalSpreadsheetData;
+
+    const tbody=document.getElementById("tbodyZoSS");
+
+    tbody.innerHTML="";
+
+    data.forEach((item,index)=>{
+
+        tbody.innerHTML+=`
+
+        <tr>
+
+        <td>${index+1}</td>
+
+        <td>
+
+        <strong>${item["Nama Sekolah"]||"-"}</strong>
+
+        </td>
+
+        <td>
+
+        ${item["Jenjang Sekolah"]||"-"}
+
+        </td>
+
+        <td>
+
+        ${item["Kapanewon"]||"-"}
+
+        </td>
+
+        <td>
+
+        ${item["Apakah lokasi sudah memiliki ZoSS?"]||"-"}
+
+        </td>
+
+        <td>
+
+        ${badgeStatus(item["Kondisi Marka ZoSS"])}
+
+        </td>
+
+        <td>
+
+        ${badgeStatus(item["Kondisi Rambu ZoSS"])}
+
+        </td>
+
+        <td>
+
+        ${badgeStatus(item["Kondisi Zebra Cross"])}
+
+        </td>
+
+        <td>
+
+        ${badgeStatus(item["Kondisi Pita Penggaduh"])}
+
+        </td>
+
+        <td>
+
+        ${item["Tahun Pemasangan ZoSS"]||"-"}
+
+        </td>
+
+        </tr>
+
         `;
-        tbody.appendChild(tr);
+
     });
-    document.getElementById('loading-spinner').classList.add('d-none');
-    document.getElementById('table-container').classList.remove('d-none');
-    if ($.fn.DataTable.isDataTable('#tableZoSS')) {
-    $('#tableZoSS').DataTable().destroy();
-}
-    $('#tableZoSS').DataTable({ responsive: true, pageLength: 10, language: { url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json' } });
+
+    document.getElementById("loading-spinner").classList.add("d-none");
+
+    document.getElementById("table-container").classList.remove("d-none");
+
+    if($.fn.DataTable.isDataTable("#tableZoSS")){
+
+        $("#tableZoSS").DataTable().destroy();
+
+    }
+
+    $("#tableZoSS").DataTable({
+
+        responsive:true,
+
+        pageLength:10,
+
+        language:{
+            url:"https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
+        }
+
+    });
+
 }
