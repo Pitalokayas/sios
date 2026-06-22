@@ -4,8 +4,8 @@ function initDashboard() {
     const totalCount = data.length;
     let layakCount = 0; let rusakCount = 0;
     data.forEach(item => {
-        const kondisiMarka = (item['Kondisi Marka'] || '').toLowerCase();
-        if (kondisiMarka.includes('baik') || kondisiMarka.includes('layak')) { layakCount++; }
+        const kondisiMarka = (item['Kondisi Marka ZoSS'] || '').toLowerCase();
+        if (kondisiMarkaZoSS.includes('baik') || kondisiMarkaZoSS.includes('layak')) { layakCount++; }
         else { rusakCount++; }
     });
     document.getElementById('total-zoss').innerText = totalCount;
@@ -29,25 +29,28 @@ function initDataTablePage() {
     tbody.innerHTML = '';
     data.forEach((item, index) => {
         const tr = document.createElement('tr');
-        const markaStatus = (item['Kondisi Marka'] || 'Baik');
+        const markaStatus = (item['Kondisi Marka ZoSS'] || 'Baik');
         const badgeMarka = markaStatus.toLowerCase().includes('pudar') || markaStatus.toLowerCase().includes('rusak') 
             ? `<span class="badge badge-status-rusak">${markaStatus}</span>` : `<span class="badge badge-status-baik">${markaStatus}</span>`;
-        const rambuStatus = (item['Kondisi Rambu'] || 'Baik');
+        const rambuStatus = (item['Kondisi Rambu ZoSS'] || 'Baik');
         const badgeRambu = rambuStatus.toLowerCase().includes('rusak') || rambuStatus.toLowerCase().includes('pudar')
             ? `<span class="badge badge-status-rusak">${rambuStatus}</span>` : `<span class="badge badge-status-baik">${rambuStatus}</span>`;
         tr.innerHTML = `
             <td>${index + 1}</td>
             <td><strong>${item['Nama Sekolah'] || item['Nama Lokasi'] || 'Fasilitas ZoSS'}</strong></td>
             <td>${item['Kapanewon'] || item['Kecamatan'] || '-'}</td>
-            <td>${item['Kalurahan'] || item['Desa'] || '-'}</td>
+            <td>${item['Kelurahan'] || item['Desa'] || '-'}</td>
             <td>${badgeMarka}</td>
             <td>${badgeRambu}</td>
-            <td>${item['Fasilitas Tambahan'] || '-'}</td>
-            <td>${item['Keterangan'] || '-'}</td>
+            <td>${item['Kondisi zebra Cross'] || '-'}</td>
+            <td>${item['Kondisi Pita Penggaduh'] || '-'}</td>
         `;
         tbody.appendChild(tr);
     });
     document.getElementById('loading-spinner').classList.add('d-none');
     document.getElementById('table-container').classList.remove('d-none');
+    if ($.fn.DataTable.isDataTable('#tableZoSS')) {
+    $('#tableZoSS').DataTable().destroy();
+}
     $('#tableZoSS').DataTable({ responsive: true, pageLength: 10, language: { url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json' } });
 }
