@@ -1,6 +1,5 @@
 // ======================================================
-// SiOSS Sleman
-// Google Spreadsheet Connector
+// SiOSS Sleman - FIXED Spreadsheet Connector
 // ======================================================
 
 window.globalSpreadsheetData = [];
@@ -10,83 +9,90 @@ const SPREADSHEET_CSV_URL =
 
 async function fetchSpreadsheetData() {
 
+    const loading = document.getElementById("loading-spinner");
+    const table = document.getElementById("table-container");
+    const errorBox = document.getElementById("error-message");
+
     try {
+        console.log("🚀 Fetching spreadsheet...");
 
-        // Loading
-        const loading = document.getElementById("loading-spinner");
-        const table = document.getElementById("table-container");
+        loading?.classList.remove("d-none");
+        table?.classList.add("d-none");
+        errorBox?.classList.add("d-none");
 
-        if (loading) loading.classList.remove("d-none");
-        if (table) table.classList.add("d-none");
-
-        console.log("Menghubungkan ke Google Spreadsheet...");
-
-        const response = await fetch(
-            SPREADSHEET_CSV_URL + "&t=" + Date.now(),
-            {
-                method: "GET",
-                cache: "no-store"
-            }
-        );
+        const response = await fetch(SPREADSHEET_CSV_URL + "&t=" + Date.now());
 
         if (!response.ok) {
-            throw new Error("HTTP Error : " + response.status);
+            throw new Error("HTTP Error " + response.status);
         }
 
         const csv = await response.text();
 
+        if (!csv || csv.length < 10) {
+            throw new Error("CSV kosong / tidak valid");
+        }
+
         const result = Papa.parse(csv, {
             header: true,
-            skipEmptyLines: true,
-            dynamicTyping: false
+            skipEmptyLines: true
         });
 
-        if (result.errors.length > 0) {
-            console.warn("PapaParse Warning :", result.errors);
+        if (!result.data || result.data.length === 0) {
+            throw new Error("Data tidak terbaca (cek header spreadsheet)");
         }
 
         window.globalSpreadsheetData = result.data;
 
-        console.log("====================================");
-        console.log("Spreadsheet berhasil dibaca");
-        console.log("Jumlah data :", result.data.length);
-        console.log("Header :", Object.keys(result.data[0] || {}));
-        console.log(result.data);
-        console.log("====================================");
+        console.log("✅ Data loaded:", result.data.length);
 
-        window.dispatchEvent(
-            new CustomEvent("spreadsheetDataLoaded", {
-                detail: result.data
-            })
-        );
+        // 🔥 langsung render (TIDAK pakai event ribet)
+        renderTable(result.data);
 
     } catch (err) {
 
-        console.error("Gagal mengambil Spreadsheet :", err);
+        console.error("❌ Error:", err);
 
-        const loading = document.getElementById("loading-spinner");
+        loading.innerHTML = `
+            <div class="alert alert-danger">
+                <b>Gagal load spreadsheet</b><br>
+                ${err.message}
+            </div>
+        `;
+    }
+}
+function renderTable(data) {
 
-        if (loading) {
+    const tbody = document.getElementById("tbodyZoSS");
 
-            loading.innerHTML = `
-                <div class="alert alert-danger">
-                    <h5>Gagal terhubung ke Google Spreadsheet</h5>
-                    <p>${err.message}</p>
-                </div>
-            `;
+    tbody.innerHTML = "";
 
-        }
+    data.forEach((row, i) => {
 
+        tbody.innerHTML += `
+            <tr>
+                <td>${i + 1}</td>
+                <td>${row["Nama Sekolah"] || "-"}</td>
+                <td>${row["Lokasi"] || "-"}</td>
+                <td>${row["Kapanewon"] || "-"}</td>
+                <td>${row["Kondisi Marka ZoSS"] || "-"}</td>
+                <td>${row["Kondisi Rambu ZoSS"] || "-"}</td>
+                <td>${row["Zebra Cross"] || "-"}</td>
+                <td>${row["Pita Penggaduh"] || "-"}</td>
+                <td>${row["Tahun"] || "-"}</td>
+            </tr>
+        `;
+    });
+
+    // destroy DataTable kalau ada
+    if ($.fn.DataTable.isDataTable("#tableZoSS")) {
+        $("#tableZoSS").DataTable().destroy();
     }
 
+    $("#tableZoSS").DataTable({
+        responsive: true,
+        autoWidth: false
+    });
+
+    document.getElementById("loading-spinner").classList.add("d-none");
+    document.getElementById("table-container").classList.remove("d-none");
 }
-
-function refreshSpreadsheetData() {
-
-    console.log("Refresh data...");
-
-    fetchSpreadsheetData();
-
-}
-
-document.addEventListener("DOMContentLoaded", fetchSpreadsheetData);
